@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/albums', 'AlbumsController@index') -> name('albums');
+
+Route::get('/albums/{id}/delete', 'AlbumsController@delete') -> name('delete_album');
