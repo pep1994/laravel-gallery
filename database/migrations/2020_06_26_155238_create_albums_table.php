@@ -17,6 +17,7 @@ class CreateAlbumsTable extends Migration
             $table->id();
             $table->string('album_name');
             $table->text('description');
+            $table->string('album_thumb', 128);
             $table->bigInteger('user_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();

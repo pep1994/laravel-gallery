@@ -1,6 +1,6 @@
 @extends('layouts.main_layout')
 @section('content')
-    <h2>Create Album</h2>
+    <h2>New Album</h2>
     <form action="{{ route('store_album') }}" method="post">
         @csrf
         <div class="form-group">

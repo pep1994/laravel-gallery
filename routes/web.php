@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/albums', 'AlbumsController@index') -> name('albums');
 
@@ -15,3 +16,8 @@ Route::patch('/albums/{id}/update', 'AlbumsController@update') -> name('update_a
 Route::get('/albums/create', 'AlbumsController@create') -> name('create_album');
 
 Route::post('/albums/store', 'AlbumsController@store') -> name('store_album');
+
+Route::get('/usersnoalbum', function () {
+    $usernoalbums = DB::table('users')->leftJoin('albums', 'users.id', 'albums.user_id')->select('users.id', 'email', 'name')->whereNull('album_name')->get();
+    return $usernoalbums;
+});

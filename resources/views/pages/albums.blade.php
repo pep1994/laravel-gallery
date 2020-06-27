@@ -13,6 +13,9 @@
             <li class="list-group-item d-flex justify-content-between"> 
                {{  $album -> album_name  }}
                <div>
+                   @if ($album -> album_thumb)
+                        <img width="300" src="{{ $album->album_thumb }}" alt="{{ $album->album_name }}" title="{{ $album->album_name }}"/>       
+                   @endif
                    <a href="{{route('edit_album', $album->id)}}" class="btn btn-primary">Edit</a> 
                    <a href="{{route('delete_album', $album->id)}}" class="btn btn-danger">Delete</a> 
                </div>
