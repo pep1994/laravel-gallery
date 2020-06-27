@@ -2,12 +2,20 @@
 
 @section('content')
     <h2>ALBUMS</h2>
+    @if (session()->has('msg'))
+        @component('components.alert-info')
+        {{ session()->get('msg') }}
+        @endcomponent
+    @endif
     <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
     <ul class="list-group">
         @foreach($albums as $album)
             <li class="list-group-item d-flex justify-content-between"> 
                {{  $album -> album_name  }}
-                <a href="{{route('delete_album', $album->id)}}" class="btn btn-danger">Delete</a> 
+               <div>
+                   <a href="{{route('edit_album', $album->id)}}" class="btn btn-primary">Edit</a> 
+                   <a href="{{route('delete_album', $album->id)}}" class="btn btn-danger">Delete</a> 
+               </div>
             </li>
         @endforeach        
     </ul>
@@ -19,7 +27,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            $('ul').on('click', 'li a', function(e){
+            if ($('div.alert')) {
+                $('div.alert').fadeOut(4000);
+            }
+            $('ul').on('click', 'li a.btn-danger', function(e){
                 e.preventDefault();
                 var urlAlbum = $(this).attr('href');
                 var parent = $(this).parents('li');

@@ -16,11 +16,25 @@ class AlbumsController extends Controller
 
     public function delete($id) {
         return Album::findOrFail($id) -> delete();
-        // return redirect() -> back();
     }
 
     public function show($id) {
         return Album::findOrFail($id);
-        // return redirect() -> back();
+    }
+
+    public function edit($id) {
+        $album = Album::findOrFail($id);
+        return view('pages.edit')->with('album', $album);
+    }
+
+    public function update(Request $req, $id) {
+        $data = $req->only(['name', 'description']);
+        $album_update = Album::where('id', $id)->update([
+            'album_name' => $data['name'],
+            'description' => $data['description']
+        ]);
+        $msg = $album_update == 1 ? 'Album ' . Album::find($id)->album_name . " aggiornato" : 'Album ' . Album::find($id)->album_name . " non aggiornato";
+        session()->flash('msg', $msg);
+        return redirect()->route('albums');
     }
 }
