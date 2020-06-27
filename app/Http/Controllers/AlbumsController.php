@@ -18,4 +18,9 @@ class AlbumsController extends Controller
         return Album::findOrFail($id) -> delete();
         // return redirect() -> back();
     }
+
+    public function show($id) {
+        return Album::findOrFail($id);
+        // return redirect() -> back();
+    }
 }

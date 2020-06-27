@@ -14,7 +14,7 @@
     <body>
         @include('components.header')
         @yield('content')
+        @yield('script')
 
-        <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
