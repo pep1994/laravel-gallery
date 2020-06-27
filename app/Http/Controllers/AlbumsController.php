@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Album;
+use App\User;
 
 class AlbumsController extends Controller
 {
@@ -34,6 +35,24 @@ class AlbumsController extends Controller
             'description' => $data['description']
         ]);
         $msg = $album_update == 1 ? 'Album ' . Album::find($id)->album_name . " aggiornato" : 'Album ' . Album::find($id)->album_name . " non aggiornato";
+        session()->flash('msg', $msg);
+        return redirect()->route('albums');
+    }
+
+    public function create() {
+        return view('pages.create-album');
+    }
+
+    public function store(Request $req) {
+
+        $album = new Album();
+        $album->album_name = $req->input('name');
+        $album->description = $req->input('description');
+        $user = User::inRandomOrder() -> first();
+        $album-> user() -> associate($user);
+        $album->save();
+
+        $msg = "Album " . $album->album_name . " inserito";
         session()->flash('msg', $msg);
         return redirect()->route('albums');
     }
