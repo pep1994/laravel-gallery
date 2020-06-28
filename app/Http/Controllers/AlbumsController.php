@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Album;
 use App\User;
 use Str;
+use Storage;
 
 class AlbumsController extends Controller
 {
@@ -17,7 +18,15 @@ class AlbumsController extends Controller
     }
 
     public function delete($id) {
-        return Album::findOrFail($id) -> delete();
+        $album = Album::findOrFail($id);
+        $thumbnail = $album->album_thumb;
+        $res = $album->delete();
+        if ($res) {
+            if ($thumbnail && Storage::disk('public')->exists($thumbnail)) {
+                Storage::disk('public')->delete($thumbnail);
+            }
+        }
+        return $res;
     }
 
     public function show($id) {
