@@ -37,24 +37,18 @@ class AlbumsController extends Controller
             'album_name' => $data['name'],
             'description' => $data['description']
         ]);
-        if ($req->hasFile('album_thumb')) {
-            $file = $req->file('album_thumb');
-            if ($file -> isValid()) {
-                $file_name = Str::slug($id . "_" .$req->input('name')); 
-                $ext = $file->extension();
-                $file_path = $file_name . '.' . $ext;
-                $file->storeAs(env('ALBUM_THUMB_DIR'), $file_path, 'public');
-                $album -> album_thumb = $file_path;
-                $album -> save();
-            }
+        if ($this->processFile($req, $id, $album)) {
+           $album->save();
         }
+        
         $msg = $album_update == 1 ? 'Album ' . Album::find($id)->album_name . " aggiornato" : 'Album ' . Album::find($id)->album_name . " non aggiornato";
         session()->flash('msg', $msg);
         return redirect()->route('albums');
     }
 
     public function create() {
-        return view('pages.create-album');
+        $album = new Album();
+        return view('pages.create-album', compact('album'));
     }
 
     public function store(Request $req) {
@@ -62,12 +56,35 @@ class AlbumsController extends Controller
         $album = new Album();
         $album->album_name = $req->input('name');
         $album->description = $req->input('description');
+        $album->album_thumb = "";
         $user = User::inRandomOrder() -> first();
         $album-> user() -> associate($user);
-        $album->save();
+        $res = $album->save();
+        if ($res) {   
+            if($this->processFile($req, $album->id, $album)){
+                $album->save();
+            }
+        }
 
         $msg = "Album " . $album->album_name . " inserito";
         session()->flash('msg', $msg);
         return redirect()->route('albums');
+    }
+
+    public function processFile(Request $req, $id, $album){
+        if (!$req->hasFile('album_thumb')) {
+            return false;
+        }
+
+        $file = $req->file('album_thumb');
+        if (!$file->isValid()) {
+            return false;
+        }
+        $file_name = Str::slug($id . "_" .$req->input('name')); 
+        $ext = $file->extension();
+        $file_path = env('ALBUM_THUMB_DIR') . "/" . $file_name . '.' . $ext;
+        $file->storeAs(env('ALBUM_THUMB_DIR'), $file_name . "." . $ext, 'public');
+        $album -> album_thumb = $file_path;
+        return true;
     }
 }

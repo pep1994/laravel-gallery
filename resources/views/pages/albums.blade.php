@@ -14,7 +14,13 @@
                {{  $album -> album_name  }}
                <div>
                    @if ($album -> album_thumb)
-                        <img width="300" src="{{ $album->album_thumb }}" alt="{{ $album->album_name }}" title="{{ $album->album_name }}"/>       
+                        <img width="300" 
+                            @if (stristr($album -> album_thumb, 'http') !== false)
+                                src="{{ asset($album->album_thumb) }}"
+                            @else
+                                src="{{asset('storage/' . $album->album_thumb) }}"
+                            @endif
+                         alt="{{ $album->album_name }}" title="{{ $album->album_name }}"/>       
                    @endif
                    <a href="{{route('edit_album', $album->id)}}" class="btn btn-primary">Edit</a> 
                    <a href="{{route('delete_album', $album->id)}}" class="btn btn-danger">Delete</a> 
