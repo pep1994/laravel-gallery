@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Album;
 use App\User;
+use App\Photo;
 use Str;
 use Storage;
 
@@ -95,5 +96,11 @@ class AlbumsController extends Controller
         $file->storeAs(env('ALBUM_THUMB_DIR'), $file_name . "." . $ext, 'public');
         $album -> album_thumb = $file_path;
         return true;
+    }
+
+    public function getImages($id) {
+        $album = Album::findOrFail($id);
+        $images = $album->photos()->get();
+        return view('pages.album_images', compact('album', 'images'));
     }
 }

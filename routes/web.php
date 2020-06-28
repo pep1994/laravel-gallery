@@ -21,3 +21,7 @@ Route::get('/usersnoalbum', function () {
     $usernoalbums = DB::table('users')->leftJoin('albums', 'users.id', 'albums.user_id')->select('users.id', 'email', 'name')->whereNull('album_name')->get();
     return $usernoalbums;
 });
+
+Route::get('/albums/{id}/images', 'AlbumsController@getImages') -> name('images_album')->where('id', '[0-9]+');
+
+Route::delete('/photos/{id}', 'PhotosController@delete') -> name('delete_photo');

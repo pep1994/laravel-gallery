@@ -22,6 +22,9 @@
                             @endif
                          alt="{{ $album->album_name }}" title="{{ $album->album_name }}"/>       
                    @endif
+                   @if ($album->photos->count() > 0) 
+                        <a href="{{route('images_album', $album->id)}}" class="btn btn-primary">View Images ({{ $album->photos->count() }})</a> 
+                   @endif
                    <a href="{{route('edit_album', $album->id)}}" class="btn btn-primary">Edit</a> 
                    <a href="{{route('delete_album', $album->id)}}" class="btn btn-danger">Delete</a> 
                </div>
