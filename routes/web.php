@@ -25,3 +25,7 @@ Route::get('/usersnoalbum', function () {
 Route::get('/albums/{id}/images', 'AlbumsController@getImages') -> name('images_album')->where('id', '[0-9]+');
 
 Route::delete('/photos/{id}', 'PhotosController@delete') -> name('delete_photo');
+
+Route::get('/photos/{id}/edit', 'PhotosController@edit') -> name('edit_photo');
+
+Route::patch('/photos/{id}/update', 'PhotosController@update') -> name('update_photo');

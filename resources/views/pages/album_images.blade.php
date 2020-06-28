@@ -1,5 +1,10 @@
 @extends('layouts.main_layout')
 @section('content')
+    @if (session()->has('msg'))
+        @component('components.alert-info')
+        {{ session()->get('msg') }}
+        @endcomponent
+    @endif
 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
     <table class="table">
         <tr>
@@ -26,9 +31,16 @@
                 <td>{{ $image->name }}</td>
                 <td>{{ $album->album_name }}</td>
                 <td>
-                    <img width="120" src="{{ asset($image->img_path) }}" alt="{{ $image->name }}">
+                    <img width="120" 
+                    @if (stristr($image->img_path, 'http') !== false)
+                        src="{{ asset($image->img_path) }}"
+                    @else
+                        src="{{ asset('storage/' . $image->img_path) }}" 
+                    @endif
+                    alt="{{ $image->name }}">
                 </td>
                 <td>
+                    <a href="{{ route('edit_photo', $image->id) }}" class="btn btn-default">Edit</a>
                     <a href="{{ route('delete_photo', $image->id) }}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
