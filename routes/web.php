@@ -29,3 +29,8 @@ Route::delete('/photos/{id}', 'PhotosController@delete') -> name('delete_photo')
 Route::get('/photos/{id}/edit', 'PhotosController@edit') -> name('edit_photo');
 
 Route::patch('/photos/{id}/update', 'PhotosController@update') -> name('update_photo');
+
+Route::get('/photos/create', 'PhotosController@create') -> name('create_photo');
+
+Route::post('/photos/store', 'PhotosController@store') -> name('store_photo');
+

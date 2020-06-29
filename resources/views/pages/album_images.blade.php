@@ -9,9 +9,6 @@
     <table class="table">
         <tr>
             <th>
-                ID
-            </th>
-            <th>
                 CREATED DATE
             </th>
             <th>
@@ -26,7 +23,6 @@
         </tr>
         @forelse ($images as $image)
             <tr>
-                <td>{{ $image->id }}</td>
                 <td>{{ $image->created_at }}</td>
                 <td>{{ $image->name }}</td>
                 <td>{{ $album->album_name }}</td>
@@ -40,8 +36,8 @@
                     alt="{{ $image->name }}">
                 </td>
                 <td>
-                    <a href="{{ route('edit_photo', $image->id) }}" class="btn btn-default">Edit</a>
-                    <a href="{{ route('delete_photo', $image->id) }}" class="btn btn-danger">Delete</a>
+                    <a href="{{ route('edit_photo', $image->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{{ route('delete_photo', $image->id) }}" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
             @empty

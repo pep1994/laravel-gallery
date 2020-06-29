@@ -103,4 +103,6 @@ class AlbumsController extends Controller
         $images = $album->photos()->get();
         return view('pages.album_images', compact('album', 'images'));
     }
+
+    
 }

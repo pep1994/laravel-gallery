@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Album extends Model
 {
+    protected $fillable = ['id'];
     protected $table = 'albums';
 
     public function photos() {

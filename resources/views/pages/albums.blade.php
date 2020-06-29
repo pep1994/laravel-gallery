@@ -22,6 +22,7 @@
                             @endif
                          alt="{{ $album->album_name }}" title="{{ $album->album_name }}"/>       
                    @endif
+                   <a href="{{route('create_photo')}}?album_id={{ $album->id }}" class="btn btn-primary">New Image</a> 
                    @if ($album->photos->count() > 0) 
                         <a href="{{route('images_album', $album->id)}}" class="btn btn-primary">View Images ({{ $album->photos->count() }})</a> 
                    @endif

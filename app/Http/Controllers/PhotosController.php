@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use App\Photo;
+use App\Album;
 use Str;
 use Storage;
 
@@ -30,34 +32,67 @@ class PhotosController extends Controller
 
     public function edit($id) {
         $photo = Photo::findOrFail($id);
-        return view('pages.edit_image')->with('photo', $photo);
+        $album = $photo -> album;
+        $albums = $this->getAlbums();
+        return view('pages.edit_image', compact('albums', 'photo', 'album'));
     }
 
     public function update(Request $req, $id) {
-        $data = $req->only(['name', 'description']);
+        $data = $req->only(['name', 'description', 'album_id']);
         $photo = Photo::findOrFail($id);
         $photo_update = Photo::where('id', $id)->update([
             'name' => $data['name'],
-            'description' => $data['description']
+            'description' => $data['description'],
+            'album_id' => $data['album_id']
         ]);
+
         if ($this->processFile($req, $id, $photo)) {
-            
-           $photo->save();
+           $photo->save(); 
+        } 
+        if ($photo_update) {
+            $msg ='Image ' . $photo->name . ' aggiornata'; 
+        } else {
+            $msg ='Image ' . $photo->name . ' non aggiornata'; 
         }
-        $msg = $photo_update ? 'Image ' . $photo->name . ' aggiornata' : 'Image ' . $photo->name . ' non aggiornata';
         session()->flash('msg', $msg);
+        return redirect()->route('images_album', $data['album_id']);
+    }
+
+    public function create(Request $req) {
+        $id = $req->has('album_id') ? $req->input('album_id') : null;
+        $album = Album::firstOrNew(['id' => $id]);
+        $photo = new Photo();
+        $albums = $this->getAlbums();
+        return view('pages.edit_image', compact('photo', 'album', 'albums'));
+    }
+
+    public function store(Request $req) {
+        $photo = new Photo();
+        $photo -> name = $req->input('name');
+        $photo -> description = $req->input('description');
+        $photo -> album_id = $req->input('album_id');
+        
+        if($this->processFile($req, $photo->id, $photo)){
+
+            $photo->save();
+            $msg = "Photo " . $photo->name . " inserita";
+        } else {
+            $msg = "Photo " . $photo->name . " non inserita";
+        }
+        session()->flash('msg', $msg);
+        
         return redirect()->route('images_album', $photo->album_id);
     }
 
     public function processFile(Request $req, $id, $photo) {
-        if ($req->file('img_path ')) {
+        if (!$req->hasFile('img_path')) {
             return false;
         }
         $file = $req->file('img_path');
         if (!$file->isValid()) {
             return false;
         }
-        $file_name = Str::slug($id . "_" .$req->input('name')); 
+        $file_name = $id ? Str::slug($id . "_" .$req->input('name')) : Str::slug($req->input('name')); 
         $ext = $file->extension();
         $file_path = env('IMG_DIR') . "/". $photo->album_id . '/' . $file_name . '.' . $ext;
         $file->storeAs(env('IMG_DIR') . '/' . $photo->album_id, $file_name . "." . $ext, 'public');
@@ -71,6 +106,10 @@ class PhotosController extends Controller
            return Storage::disk('public')->delete($photo->img_path);     
         }
         return false;
+    }
+
+    public function getAlbums() {
+        return Album::orderBy('album_name', 'asc')->get();
     }
 
 }
