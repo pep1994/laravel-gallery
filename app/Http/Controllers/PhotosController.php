@@ -11,6 +11,9 @@ use Storage;
 
 class PhotosController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
 
     protected $rules = [
         'album_id' => 'required|digit|exists:albums',

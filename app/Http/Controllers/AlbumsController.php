@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AlbumRequest;
 use App\Http\Requests\AlbumUpdateRequest;
+use Auth;
 use App\Album;
 use App\User;
 use App\Photo;
@@ -13,8 +14,13 @@ use Storage;
 
 class AlbumsController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function index() {
-        $albums = Album::orderBy('album_name', 'asc')->get();
+        $albums = Album::orderBy('album_name', 'asc')->where('user_id', Auth::user()->id)->get();
         return view('pages.albums', [
             'albums' => $albums
         ]);
@@ -69,7 +75,7 @@ class AlbumsController extends Controller
         $album->album_name = $req->input('name');
         $album->description = $req->input('description');
         $album->album_thumb = "";
-        $user = User::inRandomOrder() -> first();
+        $user = $req->user();
         $album-> user() -> associate($user);
         $res = $album->save();
         if ($res) {   

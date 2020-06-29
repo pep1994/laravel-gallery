@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
+
+Route::get('/home', 'AlbumsController@index') -> name('albums');
+Route::get('/', 'AlbumsController@index') -> name('albums');
+
 Route::get('/albums', 'AlbumsController@index') -> name('albums');
 
 Route::delete('/albums/{id}', 'AlbumsController@delete') -> name('delete_album');
@@ -33,4 +37,8 @@ Route::patch('/photos/{id}/update', 'PhotosController@update') -> name('update_p
 Route::get('/photos/create', 'PhotosController@create') -> name('create_photo');
 
 Route::post('/photos/store', 'PhotosController@store') -> name('store_photo');
+
+
+Auth::routes();
+
 
