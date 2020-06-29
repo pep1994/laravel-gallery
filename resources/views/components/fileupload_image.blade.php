@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="name">Thumbnail</label>
-    <input type="file" name="img_path" id="img_path" class="form-control" placeholder="Photo name" value="{{ $photo->name }}">
+    <input type="file"  name="img_path" id="img_path" class="form-control" placeholder="Photo name" value="{{ $photo->name }}">
   </div>
 
 @if ($photo->img_path)      

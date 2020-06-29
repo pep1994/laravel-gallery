@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AlbumRequest;
+use App\Http\Requests\AlbumUpdateRequest;
 use App\Album;
 use App\User;
 use App\Photo;
@@ -40,7 +42,7 @@ class AlbumsController extends Controller
 
     }
 
-    public function update(Request $req, $id) {
+    public function update(AlbumUpdateRequest $req, $id) {
         $data = $req->only(['name', 'description']);
         $album = Album::findOrFail($id);
         $album_update = Album::where('id', $id)->update([
@@ -61,7 +63,7 @@ class AlbumsController extends Controller
         return view('pages.create-album', compact('album'));
     }
 
-    public function store(Request $req) {
+    public function store(AlbumRequest $req) {
 
         $album = new Album();
         $album->album_name = $req->input('name');

@@ -11,6 +11,21 @@ use Storage;
 
 class PhotosController extends Controller
 {
+
+    protected $rules = [
+        'album_id' => 'required|digit|exists:albums',
+        'name' => 'required|unique:photos,name',
+        'description' => 'required',
+        'img_path' => 'required|image'
+    ];
+
+    protected $error_msg = [
+        'album_id.required' => 'Il campo Album deve essere obbligatorio',
+        'name.required' => 'Il campo Nome deve essere obbligatorio',
+        'description.required' => 'Il campo Descrizione deve essere obbligatorio',
+        'img_path.required' => 'Il campo Immagine deve essere obbligatorio'
+    ];
+
     public function index() {
 
     }
@@ -38,6 +53,7 @@ class PhotosController extends Controller
     }
 
     public function update(Request $req, $id) {
+        $this->validate($req, $this->rules, $this->error_msg);
         $data = $req->only(['name', 'description', 'album_id']);
         $photo = Photo::findOrFail($id);
         $photo_update = Photo::where('id', $id)->update([
@@ -67,6 +83,7 @@ class PhotosController extends Controller
     }
 
     public function store(Request $req) {
+        $this->validate($req, $this->rules, $this->error_msg);
         $photo = new Photo();
         $photo -> name = $req->input('name');
         $photo -> description = $req->input('description');
