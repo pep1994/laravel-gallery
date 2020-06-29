@@ -13,10 +13,11 @@ class PhotosSeeder extends Seeder
      */
     public function run()
     {
-        factory(Photo::class, 200) -> make() -> each(function($photo) {
-            $album = Album::inRandomOrder() -> first();
-            $photo -> album() -> associate($album);
-            $photo -> save();
-        });
+        $albums = Album::get();
+        foreach ($albums as $album) {
+            factory(Photo::class, 200) -> create(
+                ['album_id' => $album->id]
+            );
+        }
     }
 }

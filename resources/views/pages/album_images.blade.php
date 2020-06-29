@@ -47,6 +47,15 @@
                     </td>
                 </tr>
         @endforelse
+        <tr>
+            <td colspan="6" class="text-center">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 push-4 text-center">
+                        {{ $images->links() }}
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
 @endsection
 

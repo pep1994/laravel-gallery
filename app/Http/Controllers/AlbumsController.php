@@ -100,7 +100,7 @@ class AlbumsController extends Controller
 
     public function getImages($id) {
         $album = Album::findOrFail($id);
-        $images = $album->photos()->get();
+        $images = $album->photos()->paginate(env('IMG_FOR_PAGE'));
         return view('pages.album_images', compact('album', 'images'));
     }
 
