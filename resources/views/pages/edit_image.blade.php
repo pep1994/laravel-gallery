@@ -30,12 +30,12 @@
             @csrf
             <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" name="name" required id="name" class="form-control" placeholder="Photo name" value="{{ $photo->name }}">
+            <input type="text" name="name" required id="name" class="form-control" placeholder="Photo name" value="{{ $photo->name ? $photo->name : old('name')}}">
             </div>
             @include('components.fileupload_image')
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea name="description" required id="description" class="form-control" placeholder="Description"> {{ $photo->description }}
+                <textarea name="description" required id="description" class="form-control" placeholder="Description"> {{ $photo->description ? $photo->description : old('description') }}</textarea>
                 </textarea>
             </div>
             <button type="submit" class="btn btn-primary">

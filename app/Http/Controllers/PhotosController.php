@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Photo;
 use App\Album;
+use Auth;
 use Str;
 use Storage;
 
@@ -16,7 +17,7 @@ class PhotosController extends Controller
     }
 
     protected $rules = [
-        'album_id' => 'required|digit|exists:albums',
+        'album_id' => 'required|integer',
         'name' => 'required|unique:photos,name',
         'description' => 'required',
         'img_path' => 'required|image'
@@ -43,11 +44,12 @@ class PhotosController extends Controller
         $res = $photo->delete();
 
         if ($res) {
-            $this->deleteFile($id);
+            $this->deleteFile($id, $photo);
         }
         return $res;
     }
 
+   
     public function edit($id) {
         $photo = Photo::findOrFail($id);
         $album = $photo -> album;
@@ -120,16 +122,15 @@ class PhotosController extends Controller
         return true;
     }
 
-    public function deleteFile($id) {
-        $photo = Photo::findOrFail($id);
+    public function deleteFile($id, $photo) {
         if ($photo->img_path && Storage::disk('public')->exists($photo->img_path)) {
-           return Storage::disk('public')->delete($photo->img_path);     
-        }
-        return false;
+           Storage::disk('public')->delete($photo->img_path);     
+        } 
     }
 
+
     public function getAlbums() {
-        return Album::orderBy('album_name', 'asc')->get();
+        return Album::orderBy('album_name', 'asc')->where('user_id', Auth::user()->id)->get();
     }
 
 }

@@ -44,6 +44,10 @@ class AlbumsController extends Controller
 
     public function edit($id) {
         $album = Album::findOrFail($id);
+        $this->authorize($album);
+        // if($album->user->id !== Auth::user()->id){
+        //     abort(401, 'Unauthorized');
+        // }
         return view('pages.edit')->with('album', $album);
 
     }
@@ -70,7 +74,6 @@ class AlbumsController extends Controller
     }
 
     public function store(AlbumRequest $req) {
-
         $album = new Album();
         $album->album_name = $req->input('name');
         $album->description = $req->input('description');
