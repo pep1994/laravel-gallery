@@ -15,12 +15,13 @@ use Storage;
 class AlbumsController extends Controller
 {
 
-    public function __construct() {
-        $this->middleware('auth');
-    }
+    // public function __construct() {
+    //     $this->middleware('auth');
+    // }
 
     public function index() {
-        $albums = Album::orderBy('album_name', 'asc')->where('user_id', Auth::user()->id)->get();
+        $albums = Album::orderBy('album_name', 'asc')->where('user_id', Auth::user()->id)->paginate(1);
+        
         return view('pages.albums', [
             'albums' => $albums
         ]);

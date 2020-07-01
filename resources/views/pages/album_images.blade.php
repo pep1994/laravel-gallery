@@ -6,7 +6,7 @@
         @endcomponent
     @endif
 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-    <table class="table">
+    <table class="table table-striped">
         <tr>
             <th>
                 CREATED DATE
@@ -25,7 +25,7 @@
             <tr>
                 <td>{{ $image->created_at }}</td>
                 <td>{{ $image->name }}</td>
-                <td>{{ $album->album_name }}</td>
+                <td><a href="{{ route('edit_album', $image->album_id) }}">{{ $album->album_name }}</a></td>
                 <td>
                     <img width="120" 
                     @if (stristr($image->img_path, 'http') !== false)
@@ -36,8 +36,8 @@
                     alt="{{ $image->name }}">
                 </td>
                 <td>
-                    <a href="{{ route('edit_photo', $image->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                    <a href="{{ route('delete_photo', $image->id) }}" class="btn btn-sm btn-danger">Delete</a>
+                    <a title="Update album" href="{{ route('edit_photo', $image->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                    <a title="Delete album" href="{{ route('delete_photo', $image->id) }}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
             @empty
