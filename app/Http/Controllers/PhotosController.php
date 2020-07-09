@@ -93,7 +93,6 @@ class PhotosController extends Controller
         $photo -> name = $req->input('name');
         $photo -> description = $req->input('description');
         $photo -> album_id = $req->input('album_id');
-        
         if($this->processFile($req, $photo->id, $photo)){
 
             $photo->save();

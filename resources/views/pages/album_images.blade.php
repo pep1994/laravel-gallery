@@ -23,7 +23,7 @@
         </tr>
         @forelse ($images as $image)
             <tr>
-                <td>{{ $image->created_at }}</td>
+                <td>{{ $image->created_at->diffForHumans() }}</td>
                 <td>{{ $image->name }}</td>
                 <td><a href="{{ route('edit_album', $image->album_id) }}">{{ $album->album_name }}</a></td>
                 <td>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
+
 Route::group([
     'middleware' =>'auth',
     'prefix' => 'dashboard'
@@ -47,5 +48,15 @@ Route::group([
 
 
 Auth::routes();
+
+Route::group(
+    [
+        'prefix' => 'gallery'
+    ], 
+        function () {
+            Route::get('albums', 'GalleryController@index')->name('gallery_albums');
+            Route::get('/', 'GalleryController@index')->name('gallery_albums');
+            Route::get('/album/{id}/images', 'GalleryController@showAlbumImages')->name('gallery_album_images');
+});
 
 

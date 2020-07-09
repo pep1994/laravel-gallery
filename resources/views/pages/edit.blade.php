@@ -17,5 +17,7 @@
             </textarea>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{{ route('albums')}}" type="button" class="btn btn-default">Back</a>
+        <a href="{{ route('images_album', $album->id)}}" type="button" class="btn btn-success">Images</a>
     </form>
 @endsection

@@ -34,16 +34,28 @@
                        @endif
                    </td>
                    <td>{{ $album ->user->name }}</td>
-                   <td>{{ $album->created_at }}</td>
+                   <td>{{ $album->created_at->diffForHumans() }}</td>
                    <td>
-                       <a title="Add picture" href="{{route('create_photo')}}?album_id={{ $album->id }}" class="btn btn-success">
-                            <i class="fas fa-plus"></i>
-                        </a> 
-                       @if ($album->photos->count() > 0) 
-                            <a title="View images" href="{{route('images_album', $album->id)}}" class="btn btn-primary"><i class="fas fa-search"></i></a> 
-                       @endif
-                       <a title="Update album" href="{{route('edit_album', $album->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a> 
-                       <a title="Delete album" href="{{route('delete_album', $album->id)}}" class="btn btn-danger"><i class="fas fa-trash"></i></a> 
+                       <div class="row">
+                           <div class="col-3">
+                               <a title="Add picture" href="{{route('create_photo')}}?album_id={{ $album->id }}" class="btn btn-success">
+                                    <i class="fas fa-plus"></i>
+                                </a> 
+                           </div>
+                           <div class="col-3">
+                               @if ($album->photos->count() > 0) 
+                                    <a title="View images" href="{{route('images_album', $album->id)}}" class="btn btn-primary"><i class="fas fa-search"></i></a> 
+                                @else
+                                    <i class="fas fa-search"></i>
+                               @endif
+                           </div>
+                           <div class="col-3">
+                               <a title="Update album" href="{{route('edit_album', $album->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a> 
+                            </div>
+                            <div class="col-3">
+                                <a title="Delete album" href="{{route('delete_album', $album->id)}}" class="btn btn-danger"><i class="fas fa-trash"></i></a> 
+                            </div>
+                       </div>
                    </td>
                 </tr>
             @endforeach  
